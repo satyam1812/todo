@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/custom.css">
+</head>
+<body>
+	<!-- Header and navbar -->
+	<header>
+		<nav>
+			<div class="navbar">
+				<h1>Welcome:<span class="nameField"></span></h1><br><br>
+				<a href="" class="btn btn-info logOutBtn">LOGOUT</a>
+			</div>
+		</nav>
+	</header>
+
+	<!-- Main Content -->
+	<section>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3" border="solid black">
+					
+				</div>
+				<div class="col-md-2">
+					<form>
+						<input type="submit" class="btn btn-info viewuserBtn" value="VIEW USER">
+						<input type="submit" class="btn btn-info viewtaskBtn" value="VIEW TASK">
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</section>
+
+	<div class="col-md-2">
+		<div class="col-md-6">
+			<div class="userListWrap">
+				<h3>User list</h3>
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center">Name</th>
+							<th class="text-center">email</th>
+							<th class="text-center">image</th>
+							<th class="text-center">Action</th>
+						</tr>
+					</thead>
+					<tbody class="userList">
+						
+					</tbody>
+				</table>				
+			</div>
+			
+		</div>
+		</div
+
+		<div class="col-md-2">
+		<div class="col-md-6">
+			<div class="taskListWrap">
+				<h3>task list</h3>
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center">task_name</th>
+							<th class="text-center">task_date</th>
+							<th class="text-center">task_desc</th>
+						</tr>
+					</thead>
+					<tbody class="taskList">
+						
+					</tbody>
+				</table>				
+			</div>
+			
+		</div>
+	</div>
+	<!-- Footer -->
+	<footer>
+		
+	</footer>
+	<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+
+			var userData = localStorage.getItem('user');
+			var userData = JSON.parse(userData);
+			console.log(userData);
+			$('.nameField').empty();
+			$('.nameField').html(userData.userName); 
+
+		
+//
+			$('.viewuserBtn').click(function(e) {
+				e.preventDefault();
+
+				$('.userListWrap').toggle();
+
+				var userData = localStorage.getItem("user");
+				var userData = JSON.parse(userData);
+				var email = userData.emailId;
+				
+
+				var request = $.ajax({
+					"url": "http://localhost:3001/view1",
+					"type": "post",
+					"data" : {
+						"email" : email
+					}
+				});
+
+				request.success(function(data){
+					console.log(data);
+
+					$('.userList').empty();
+					for (var i = 0; i < data.length; i++) {
+						$('.userList').append('<tr>\
+							<td class="text-center">'+data[i]["userName"]+'</td>\
+							<td class="text-center">'+data[i]["emailId"]+'</td>\
+							<td class="text-center">'+data[i]["uploads/cfec509df0f15268bbf8470fb0916a50.jpg"]+'</td>\
+							<td class="text-center"><button class="btn btn-sm btn-danger">Block</button></td>\
+						</tr>');
+					}
+					// if ( data === "success" ) {
+					// 	//alert("delete data");
+					// 	// window.location.replace('home.html');
+					// } else {
+					// 	alert("invalid Credential");
+					// }
+				});
+
+				request.fail(function(error){
+					console.log("error");
+				});
+			});
+//========================================================================================//
+				$('.viewtaskBtn').click(function(e) {
+				e.preventDefault();
+
+				$('.taskListWrap').toggle();
+
+				var userData = localStorage.getItem("task");
+				var userData = JSON.parse(userData);
+			
+				
+
+				var request = $.ajax({
+					"url": "http://localhost:3001/viewtask",
+					"type": "post",
+					"data" : {
+						
+					}
+				});
+
+				request.success(function(data){
+					console.log(data);
+
+					$('.taskList').empty();
+					for (var i = 0; i < data.length; i++) {
+						$('.taskList').append('<tr>\
+							<td class="text-center">'+data[i]["task_name"]+'</td>\
+							<td class="text-center">'+data[i]["task_date"]+'</td>\
+							<td class="text-center">'+data[i]["task_desc"]+'</td>\
+							<td class="text-center"><button class="btn btn-sm btn-danger">Block</button></td>\
+						</tr>');
+					}
+					// if ( data === "success" ) {
+					// 	//alert("delete data");
+					// 	// window.location.replace('home.html');
+					// } else {
+					// 	alert("invalid Credential");
+					// }
+				});
+
+				request.fail(function(error){
+					console.log("error");
+				});
+			});
+
+
+			$('.logOutBtn').click(function(e){
+			 	e.preventDefault();
+			 	
+			 	localStorage.removeItem("user");
+			 	window.location.replace('index.html');
+			});
+		
+		});
+
+	</script>
+</body>
+</html>

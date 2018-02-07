@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/custom.css">
+</head>
+<body>
+
+	<header>
+		<nav>
+			<div class="navbar">
+				UPLOAD YOUR TASK
+			</div>
+		</nav>
+	</header>
+
+	<section>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3">
+					<h3>TASK DETAILS</h3>
+					<form>
+						<div class="form-group">
+							<label>USER ID</label>
+							<input type="text" name="userid" class="form-control task-id-field">
+						</div>
+						<div class="form-group">
+							<label>TASK NAME </label>
+							<input type="text" name="name" class="form-control task-name-field">
+                         </div>
+                         <div>
+							<label>TASK DATE </label><br>
+							<input type="date" name="task date" class="form control task-date-field">
+						</div><br>
+							<div>
+							<label>TASK DESCRIPTION </label>
+							<div class="jumbotron">
+		
+				<input type="file" class="form-control previewImage">
+			</div>
+			<div class="previewImageContainer"></div>
+			<!-- <div class="form-group">
+				<input type="submit" class="btn btn-info uploadBtn" value="upload">
+			</div> -->
+		
+	</div>
+						</div><br>
+						
+						<div class="form-group">
+							<input type="submit" class="btn btn-info submitBtn" value="ADD">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+	<script type="text/javascript">
+		// document ready
+		$(document).ready(function(){
+
+			$('.submitBtn').click(function(e) {
+				e.preventDefault();
+
+				var userid = $('.task-id-field').val();
+				var name = $('.task-name-field').val();
+				var date  = $('.task-date-field').val();
+				var DESCRIPTION  = $('.task-desc-field').val();
+
+
+
+				if ( userid.length == 0 ) {
+					alert("userid is required");
+					return false;
+				}
+
+				if ( name.length == 0 ) {
+					alert("task name  is required");
+					return false;
+				}
+
+				var request = $.ajax({
+					"url": "http://localhost:3001/gettask",
+					"type": "POST",
+					"data": {
+						"user_id" : userid,
+						"task_date": date,
+						"task_name" : name,
+						"DESCRIPTION" : DESCRIPTION
+					}
+				});
+
+				request.success(function(data){
+					if ( data === "success" ) {
+						console.log("task created.");
+						window.location.replace('home.html');
+					} else {
+						alert("Invalid Credential");
+					}
+				});
+
+				request.fail(function(error){
+					console.log("error");
+				});
+			});
+			$('.previewImage').change(function(event){
+
+				 var userid = $('.task-id-field').val();
+
+
+				var file = event.target.files[0];
+				$('.previewImageContainer').empty();
+
+				var formData = new FormData();
+				formData.append('image', file);
+				formData.append('user_id', user_id);
+
+				$.ajax({
+					type: 'POST',
+					url: 'http://localhost:3001/uploadImage1',
+					dataType: "json",
+					data:{ formData,userid },
+					async: false,
+					processData: false,
+					contentType: false,
+					success: function (data) {
+						console.log(data);
+					}
+				});
+
+
+				$('.previewImageContainer').html('<img src='+URL.createObjectURL(file)+' width="150px" height="150px">');
+			});
+
+		});
+
+	</script>
+</body>
+</html>>

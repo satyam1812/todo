@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/custom.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<div class="navbar">
+				VIEW TASK
+			</div>
+		</nav>
+	</header>
+
+	<section>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3">
+					<h3>YOUR TASKS</h3>
+					<form>
+						
+							
+						<div class="form-group">
+								<a href="home.html" class="btn btn-info">HOME</a>
+						</div> 
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+	<script type="text/javascript">
+		// document ready
+		$(document).ready(function(){
+
+			$('.okBtn').click(function(e) {
+				e.preventDefault();
+
+				
+				}
+
+				
+
+				var request = $.ajax({
+					"url": "http://localhost:3001/view",
+					"type": "POST",
+					"data": {
+						
+						
+					}
+				});
+
+				request.success(function(data){
+					if ( data === "success") {
+					
+						window.location.replace('home.html');
+					} else {
+						alert("Invalid Credential");
+					}
+				});
+
+				request.fail(function(error){
+					console.log("error");
+				});
+			});
+
+		});
+
+	</script>
+
+
+</body>
+</html>
