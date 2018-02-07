@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/custom.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<div class="navbar">
+				UPDATE YOUR TASK
+			</div>
+		</nav>
+	</header>
+
+	<section>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3">
+					<h3>DELETE TASK</h3>
+					<form>
+						<div class="form-group">
+							<label>USER ID</label>
+							<input type="text" name="userid" class="form-control task-id-field">
+						</div>
+						<div class="form-group">
+							<input type="submit" class="btn btn-info deleteBtn" value="DELETE">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+	<script type="text/javascript">
+		// document ready
+		$(document).ready(function(){
+
+			$('.deleteBtn').click(function(e) {
+				e.preventDefault();
+
+				var userid = $('.task-id-field').val();
+				
+
+
+				if ( userid.length == 0 ) {
+					alert("userid is required");
+					return false;
+				}
+
+				
+
+				var request = $.ajax({
+					"url": "http://localhost:3001/delete",
+					"type": "POST",
+					"data": {
+						"user_id" : userid,
+						
+					}
+				});
+
+				request.success(function(data){
+					if ( data === "success" ) {
+						console.log("task deleted.");
+						window.location.replace('home.html');
+					} else {
+						alert("Invalid Credential");
+					}
+				});
+
+				request.fail(function(error){
+					console.log("error");
+				});
+			});
+
+		});
+
+	</script>
+
+
+</body>
+</html>>
